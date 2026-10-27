@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Landing-loaded raw tables, one per source system. Nothing downstream reads the sources directly."
+    schema: raw
+    tables:
+      - name: raw_bku
+        description: "SIMDA BKU entries, captured from the MySQL binary log."
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after: {count: 2, period: hour}
+          error_after: {count: 6, period: hour}
+      - name: raw_bendahara
+        description: "Treasurer registry with NIK and bank account — the PII source of record."
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after: {count: 2, period: hour}
+          error_after: {count: 6, period: hour}
+      - name: raw_pagu
+        description: "e-budgeting pagu_anggaran, captured from the PostgreSQL logical replication slot."
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after: {count: 2, period: hour}
+          error_after: {count: 6, period: hour}
+      - name: raw_aset
+        description: "Legacy Oracle Aset nightly extract, landed as a file."
+        loaded_at_field: _loaded_at
+      - name: raw_ref_skpd
+        description: "SKPD reference extract from SIMDA."
+      - name: raw_ref_program
+        description: "Program reference extract from e-budgeting."

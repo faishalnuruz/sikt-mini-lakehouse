@@ -1,0 +1,14 @@
+# Local profile: the warehouse is the `dwh` PostgreSQL database from compose.yaml.
+# In production this target is BigQuery or Redshift; only this file changes.
+sikt:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('SIKT_PG_HOST', '127.0.0.1') }}"
+      port: "{{ env_var('SIKT_PG_PORT', '5432') | int }}"
+      user: "{{ env_var('SIKT_PG_USER', 'postgres') }}"
+      password: "{{ env_var('SIKT_PG_PASSWORD', 'sikt-postgres') }}"
+      dbname: "{{ env_var('SIKT_DWH_DB', 'dwh') }}"
+      schema: analytics
+      threads: 4

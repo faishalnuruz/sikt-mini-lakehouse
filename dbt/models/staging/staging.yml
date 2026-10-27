@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: stg_simda_bku
+    description: "Typed BKU entries from SIMDA. Realization is the PENGELUARAN side of this ledger."
+    columns:
+      - name: id_bku
+        description: "BKU entry number, the natural key from SIMDA."
+        tests: [unique, not_null]
+      - name: kode_skpd
+        tests: [not_null]
+      - name: jenis
+        description: "PENGELUARAN counts toward realization; PENERIMAAN does not."
+        tests:
+          - accepted_values:
+              values: ["PENGELUARAN", "PENERIMAAN"]
+      - name: jumlah
+        tests: [not_null]
+      - name: id_bendahara
+        tests:
+          - relationships:
+              to: ref('stg_bendahara')
+              field: id_bendahara
+
+  - name: stg_bendahara
+    description: "Treasurer registry. The PII boundary: only SHA-256 hashes and masks are exposed downstream."
+    columns:
+      - name: id_bendahara
+        tests: [unique, not_null]
+      - name: kode_skpd
+        tests: [not_null]
+      - name: nik_hash
+        description: "SHA-256 of the NIK — irreversible, used for joins and audit, never for display."
+        tests: [not_null]
+
+  - name: stg_pagu
+    description: "Budget ceilings per SKPD, program, and account, from the logical replication slot."
+    columns:
+      - name: pagu_id
+        tests: [unique, not_null]
+      - name: kode_skpd
+        tests: [not_null]
+      - name: pagu
+        tests: [not_null]
+
+  - name: stg_aset
+    description: "Legacy Oracle Aset extract: fixed assets per SKPD."
+    columns:
+      - name: kode_barang
+        tests: [not_null]
+
+  - name: stg_ref_skpd
+    description: "SKPD reference list from SIMDA."
+    columns:
+      - name: kode_skpd
+        tests: [unique, not_null]
+
+  - name: stg_ref_program
+    description: "Program reference list from e-budgeting."
+    columns:
+      - name: kode_program
+        tests: [unique, not_null]

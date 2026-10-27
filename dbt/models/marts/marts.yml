@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: dim_skpd
+    description: "One row per SKPD, the dimension every dashboard slices by."
+    columns:
+      - name: kode_skpd
+        tests: [unique, not_null]
+
+  - name: dim_program
+    columns:
+      - name: kode_program
+        tests: [unique, not_null]
+
+  - name: dim_akun
+    columns:
+      - name: kode_akun
+        tests: [unique, not_null]
+
+  - name: fact_realisasi
+    description: "Realization per SKPD x account x month, from the BKU ledger."
+    columns:
+      - name: kode_skpd
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_skpd')
+              field: kode_skpd
+      - name: kode_akun
+        tests:
+          - relationships:
+              to: ref('dim_akun')
+              field: kode_akun
+      - name: realisasi
+        tests: [not_null]
+
+  - name: fact_pagu
+    description: "Budget ceiling per SKPD x program x account, from e-budgeting."
+    columns:
+      - name: kode_skpd
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_skpd')
+              field: kode_skpd
+      - name: kode_program
+        tests:
+          - relationships:
+              to: ref('dim_program')
+              field: kode_program
+      - name: pagu
+        tests: [not_null]
+
+  - name: mart_realisasi_skpd
+    description: "Alert and dashboard source: realization vs pagu per SKPD, with the >90% threshold flag."
+    columns:
+      - name: kode_skpd
+        tests: [unique, not_null]
+      - name: persen_realisasi
+        tests: [not_null]
+      - name: over_threshold
+        tests: [not_null]
+
+  - name: mart_aset_per_skpd
+    description: "Fixed-asset exposure per SKPD from the Oracle Aset extract."
+    columns:
+      - name: kode_skpd
+        tests: [unique, not_null]

@@ -1,0 +1,63 @@
+{
+  "skpd_count": 2,
+  "skpd": [
+    {
+      "kode_skpd": "1.02.02",
+      "nama_skpd": "Dinas Kesehatan",
+      "pagu_total": 1110000000000.01,
+      "realisasi_total": 1050800000000.02,
+      "sisa_pagu": 59199999999.99,
+      "persen_realisasi": 94.67
+    },
+    {
+      "kode_skpd": "1.05.02",
+      "nama_skpd": "Dinas Sosial",
+      "pagu_total": 920000000000.0,
+      "realisasi_total": 855599999999.98,
+      "sisa_pagu": 64400000000.02,
+      "persen_realisasi": 93.0
+    }
+  ],
+  "payload": {
+    "text": "APBD realization over 90% pagu",
+    "blocks": [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": "\ud83d\udea8 APBD realization over 90% pagu"
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*2 SKPD* melewati 90% pagu. Data per hari ini, dari mart `mart_realisasi_skpd` \u2014 bukan hasil rekonsiliasi manual."
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*Dinas Kesehatan* (`1.02.02`)\n\u2022 Realisasi: Rp 1,050.80 M dari pagu Rp 1,110.00 M\n\u2022 Persen: *94.67%*  \u00b7  Sisa: Rp 59.20 M"
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*Dinas Sosial* (`1.05.02`)\n\u2022 Realisasi: Rp 855.60 M dari pagu Rp 920.00 M\n\u2022 Persen: *93.0%*  \u00b7  Sisa: Rp 64.40 M"
+        }
+      },
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "mrkdwn",
+            "text": "sumber: SIMDA BKU via CDC + e-budgeting pagu \u00b7 pipeline sikt-mini-lakehouse"
+          }
+        ]
+      }
+    ]
+  }
+}
