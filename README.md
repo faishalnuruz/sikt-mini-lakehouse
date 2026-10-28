@@ -1,4 +1,5 @@
 # SIKT Mini Financial Data Lakehouse
+[![CI](https://github.com/faishalnuruz/sikt-mini-lakehouse/actions/workflows/ci.yml/badge.svg)](https://github.com/faishalnuruz/sikt-mini-lakehouse/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Single source of truth untuk APBD: SIMDA MySQL and e-budgeting PostgreSQL captured through real CDC,
 landed immutably, transformed by dbt into a tested star schema, orchestrated by Airflow, served in
