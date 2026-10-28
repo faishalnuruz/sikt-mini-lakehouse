@@ -24,7 +24,7 @@ deployment would add. A reviewer should hold the artifact to this table.
 | Debezium + Kafka | **Designed** | Replaced by direct binlog and slot streaming — the same events, without the transport. The swap is two capture modules |
 | MWAA | **Designed** | Plain Airflow here; the DAG is the deployable unit |
 | BigQuery / Redshift | **Designed** | PostgreSQL locally; the dbt project ports by changing the adapter |
-| Dataflow / Pub/Sub (streaming, <30s) | **Not built** | Belongs to project 2 of the PRD — the streaming semantics live in [streaming-ai-features](https://github.com/faishalnuruz/streaming-ai-features); nothing here claims it |
+| Dataflow / Pub/Sub (streaming, <30s) | **Not built here** | Built as its own project: [apbd-realtime-alerts](https://github.com/faishalnuruz/apbd-realtime-alerts) runs MySQL binlog → Debezium → Kafka → masked consumer with a *measured* p95 of ~2.5s against the PRD's 30s target; even there the production transports (Pub/Sub, Dataflow) stay designed |
 | OpenMetadata | **Not built** | Covered conceptually by the separate [lakehouse-governance](https://github.com/faishalnuruz/lakehouse-governance) project (catalog policies, masking, lineage verification) |
 
 ## The three PRD projects, restated honestly
@@ -32,9 +32,11 @@ deployment would add. A reviewer should hold the artifact to this table.
 - **P1 — SIKT mini lakehouse**: built here, locally and real. The production-grade pieces
   (Kafka transport, MWAA, BigQuery, Amazon S3 itself) are documented targets, and every one of
   them is a deployment change rather than a redesign.
-- **P2 — APBD real-time streaming (<30s, Dataflow, Pub/Sub)**: not built. It is a different
-  project with different latency semantics; the alert in this repository is batch-windowed by
-  design (the DAG's 2-hour schedule).
+- **P2 — APBD real-time streaming (<30s, Dataflow, Pub/Sub)**: built — in its own repository,
+  [apbd-realtime-alerts](https://github.com/faishalnuruz/apbd-realtime-alerts), with the latency
+  measured (p95 ≈ 2.5s vs the PRD's 30s) rather than asserted. The alert *in this repository*
+  remains batch-windowed by design (the DAG's 2-hour schedule); the two projects answer
+  different questions on purpose.
 - **P3 — Governance and observability**: partially covered here (PII boundary, RBAC, tested
   invariants) and substantially covered by `lakehouse-governance`. OpenMetadata itself is not
   deployed anywhere.

@@ -100,7 +100,9 @@ repository is explicit about the difference:
 
 - **Debezium + Kafka** are replaced by direct binlog and replication-slot streaming — the same
   events, without the transport. Swapping the capture modules for Debezium connectors changes two
-  files and nothing downstream.
+  files and nothing downstream. That swap now exists as its own project:
+  [apbd-realtime-alerts](https://github.com/faishalnuruz/apbd-realtime-alerts) runs the SIMDA side
+  through real Debezium + Kafka with a measured p95 under 3 seconds.
 - **MWAA** is plain Airflow here: the DAG, schedule, retries, and SLA gate are the deployable unit.
 - **Amazon S3** is LocalStack's S3 API with the exact boto3 client code; the endpoint is the only
   difference.
