@@ -24,7 +24,7 @@ deployment would add. A reviewer should hold the artifact to this table.
 | Debezium + Kafka | **Designed** | Replaced by direct binlog and slot streaming — the same events, without the transport. The swap is two capture modules |
 | MWAA | **Designed** | Plain Airflow here; the DAG is the deployable unit |
 | BigQuery / Redshift | **Designed** | PostgreSQL locally; the dbt project ports by changing the adapter |
-| Dataflow / Pub/Sub (streaming, <30s) | **Not built** | Belongs to project 2 of the PRD; nothing here claims it |
+| Dataflow / Pub/Sub (streaming, <30s) | **Not built** | Belongs to project 2 of the PRD — the streaming semantics live in [streaming-ai-features](https://github.com/faishalnuruz/streaming-ai-features); nothing here claims it |
 | OpenMetadata | **Not built** | Covered conceptually by the separate [lakehouse-governance](https://github.com/faishalnuruz/lakehouse-governance) project (catalog policies, masking, lineage verification) |
 
 ## The three PRD projects, restated honestly
