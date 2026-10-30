@@ -108,9 +108,13 @@ repository is explicit about the difference:
   difference.
 - **BigQuery/Redshift** is PostgreSQL: the dbt models and star schema port by changing the
   adapter.
-- **OpenMetadata** is not built. The PRD's governance row is covered by the PII boundary and RBAC
-  here, and by the separate [lakehouse-governance](https://github.com/faishalnuruz/lakehouse-governance)
-  project for catalog, lineage, and policy enforcement.
+- **OpenMetadata** is not built *here*. The PRD's governance row is covered by the PII boundary
+  and RBAC in this repo, and deployed for real in its own project:
+  [apbd-observability](https://github.com/faishalnuruz/apbd-observability) runs a genuine
+  OpenMetadata 2.0 platform — this lakehouse's shape catalogued with owners, PII tags, lineage,
+  contract-based quality scores, and a drift-verifying read-back — with policy-pattern coverage
+  (enforced rules, lineage diff) in
+  [lakehouse-governance](https://github.com/faishalnuruz/lakehouse-governance).
 
 See [`docs/prd-mapping.md`](docs/prd-mapping.md) for the honest, per-requirement mapping —
 including which rows of a certain "100% match" table should say *designed*, not *done*.

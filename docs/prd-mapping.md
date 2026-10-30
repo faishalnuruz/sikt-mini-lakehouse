@@ -25,7 +25,7 @@ deployment would add. A reviewer should hold the artifact to this table.
 | MWAA | **Designed** | Plain Airflow here; the DAG is the deployable unit |
 | BigQuery / Redshift | **Designed** | PostgreSQL locally; the dbt project ports by changing the adapter |
 | Dataflow / Pub/Sub (streaming, <30s) | **Not built here** | Built as its own project: [apbd-realtime-alerts](https://github.com/faishalnuruz/apbd-realtime-alerts) runs MySQL binlog → Debezium → Kafka → masked consumer with a *measured* p95 of ~2.5s against the PRD's 30s target; even there the production transports (Pub/Sub, Dataflow) stay designed |
-| OpenMetadata | **Not built** | Covered conceptually by the separate [lakehouse-governance](https://github.com/faishalnuruz/lakehouse-governance) project (catalog policies, masking, lineage verification) |
+| OpenMetadata | **Built, in its own repo** | [apbd-observability](https://github.com/faishalnuruz/apbd-observability) (P3) runs a real OpenMetadata 2.0.7 platform — this lakehouse's shape catalogued with owners, PII tags, table-level lineage and a `catalog-verify` that fails on drift. Policy-pattern coverage (enforced rules, lineage diff): [lakehouse-governance](https://github.com/faishalnuruz/lakehouse-governance) |
 
 ## The three PRD projects, restated honestly
 
@@ -38,8 +38,12 @@ deployment would add. A reviewer should hold the artifact to this table.
   remains batch-windowed by design (the DAG's 2-hour schedule); the two projects answer
   different questions on purpose.
 - **P3 — Governance and observability**: partially covered here (PII boundary, RBAC, tested
-  invariants) and substantially covered by `lakehouse-governance`. OpenMetadata itself is not
-  deployed anywhere.
+  invariants), substantially covered by
+  [apbd-observability](https://github.com/faishalnuruz/apbd-observability) — a real OpenMetadata
+  2.0 deployment with contract-based quality scoring (65/100 on a defect-seeded clone of this
+  lakehouse's shape), a fail-closed RBAC gateway with audit trail, and Prometheus/Grafana —
+  plus [lakehouse-governance](https://github.com/faishalnuruz/lakehouse-governance) for the
+  policy-pattern side. OpenMetadata is deployed there, locally and for real.
 
 ## What to say in the application
 
